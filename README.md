@@ -3,13 +3,14 @@ Mancala Game
 
 A Java version of an ancient board game, believed to be more than several thousand years old!
 
-The game has the following starting set up:
-
-Two players
+Set-up
 ------------
 
- * A board containing 2 sets of 6 cups for each player laid out in two lines of 6 facing each other, with one larger "end cup" on the left of the players 6 normal cups
- * 4 beads in each of the players normal cups
+The game has the following starting set up:
+
+* Two players
+* A board containing 2 sets of 6 cups for each player laid out in two lines of 6 facing each other, with one larger "end cup" on the left of the players 6 normal cups
+* 4 beads in each of the players normal cups
 
 The game has the following rules:
 
