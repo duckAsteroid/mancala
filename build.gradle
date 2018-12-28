@@ -1,0 +1,14 @@
+group = 'com.asteroid.duck'
+version = '0.0.1'
+description = 'A Java Mancala game'
+
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.slf4j:slf4j-api:1.7.25'
+}
+
