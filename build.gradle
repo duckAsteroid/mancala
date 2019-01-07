@@ -1,4 +1,7 @@
-group = 'com.asteroid.duck'
+plugins {
+    id 'net.ltgt.apt' version '0.19' 
+}
+group 'com.asteroid.duck'
 version = '0.0.1'
 description = 'A Java Mancala game'
 
@@ -10,5 +13,11 @@ repositories {
 
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.25'
+    compileOnly 'org.projectlombok:lombok:1.18.2'
+    annotationProcessor 'org.projectlombok:lombok:1.18.2'
+
+    testCompile 'junit:junit:4.11'
+    testCompile 'org.mockito:mockito-all:1.10.19'
+    testRuntime 'ch.qos.logback:logback-classic:1.2.3'
 }
 
