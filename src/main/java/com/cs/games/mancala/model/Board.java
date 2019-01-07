@@ -46,34 +46,44 @@ public class Board {
     private final List<Cup> nextMoves;
 
     public Board(int[] beads, Player nextPlayer) {
-        this.beads = beads;
-        this.nextPlayer = nextPlayer;
-        this.scores = new int[]{calcScore(Player.ONE), calcScore(Player.TWO)};
-        this.nextMoves = calcNextMoves();
+        this(beads,
+                nextPlayer,
+                new int[]{
+                        calcScore(Player.ONE, beads),
+                        calcScore(Player.TWO, beads)
+                },
+                calcNextMoves(nextPlayer, beads));
         checksum();
     }
 
     public Board(int[] beads, Player nextPlayer, int[] scores, List<Cup> nextMoves) {
+        if(beads == null || beads.length != 14) {
+            throw new IllegalArgumentException("Beads should be 14");
+        }
         this.beads = beads;
+        if (nextPlayer == null) {
+            throw new IllegalArgumentException("Player cannot be null");
+        }
         this.nextPlayer = nextPlayer;
+        if(scores.length != 2) {
+            throw new IllegalArgumentException("Scores must be 2 in length");
+        }
         this.scores = scores;
         this.nextMoves = nextMoves;
         checksum();
     }
 
-    public void checksum() {
+    private void checksum() {
+        assert beadCount() == 48: "Count of beads is not 48";
+        assert scores[0] + scores[1] == 48: "Count of scores is not 48";
+    }
+
+    private int beadCount() {
         int beadCount = 0;
         for(int i=0; i < 14; i++) {
             beadCount += beads[i];
         }
-        if(beadCount != 48 ) {
-            throw new IllegalStateException("Count of beads is not 48!!");
-        }
-
-        int scoreCount = scores[0] + scores[1];
-        if(scoreCount != 48 ) {
-            throw new IllegalStateException("Count of scores is not 48!!");
-        }
+        return beadCount;
     }
 
     public static Board initialBoard() {
@@ -84,7 +94,10 @@ public class Board {
         return new int[]{4,4,4,4,4,4,0,4,4,4,4,4,4,0};
     }
 
-    private int calcScore(Player player) {
+    private static int calcScore(Player player, int[] beads) {
+        if(beads == null || beads.length != 14) {
+            throw new IllegalArgumentException("Beads should be 14");
+        }
         int score = 0;
         for (Cup cup : Cup.playerCups(player)) {
             score += beads[cup.index()];
@@ -124,7 +137,7 @@ public class Board {
                 .collect(Collectors.toList());
     }
 
-    private List<Cup> calcNextMoves() {
+    private static List<Cup> calcNextMoves(Player nextPlayer, int[] beads) {
         ArrayList<Cup> moves = new ArrayList<>();
         for(Cup playerCup : Cup.playerMoveCups(nextPlayer)) {
             if (beads[playerCup.index()] > 0) {

@@ -10,6 +10,18 @@ public class BoardTest {
 
     private Board subject = Board.initialBoard();
 
+    @Test(expected = AssertionError.class)
+    public void testBadCounts() {
+        // only fails if assertions enabled
+        Board bad = new Board(new int[14], Player.ONE);
+        assert false : "Should fail assertion check earlier";
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBadCountSize() {
+        Board bad = new Board(new int[12], Player.ONE);
+    }
+
     @Test
     public void testInitialScore() {
         assertEquals(24, subject.getScore(Player.ONE));
