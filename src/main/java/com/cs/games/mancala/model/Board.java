@@ -62,8 +62,17 @@ public class Board {
     }
 
     public void checksum() {
-        if (Arrays.asList(beads).stream().count() == 48) {
+        int beadCount = 0;
+        for(int i=0; i < 14; i++) {
+            beadCount += beads[i];
+        }
+        if(beadCount != 48 ) {
             throw new IllegalStateException("Count of beads is not 48!!");
+        }
+
+        int scoreCount = scores[0] + scores[1];
+        if(scoreCount != 48 ) {
+            throw new IllegalStateException("Count of scores is not 48!!");
         }
     }
 
