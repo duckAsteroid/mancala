@@ -52,9 +52,11 @@ public class Main {
             MoveSupplier player = game.getPlayer();
             Move move = player.selectFrom(game.getBoard());
             if (move == null) {
+                System.out.println("Undo: "+move.getCup());
                 game.undo();
             }
             else {
+                System.out.println("Move: "+move.getCup());
                 game.doMove(move);
             }
         }

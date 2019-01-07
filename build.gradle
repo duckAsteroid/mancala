@@ -18,6 +18,6 @@ dependencies {
 
     testCompile 'junit:junit:4.11'
     testCompile 'org.mockito:mockito-all:1.10.19'
-    testRuntime 'ch.qos.logback:logback-classic:1.2.3'
+    runtime 'ch.qos.logback:logback-classic:1.2.3'
 }
 
