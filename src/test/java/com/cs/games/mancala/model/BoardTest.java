@@ -1,12 +1,23 @@
 package com.cs.games.mancala.model;
 
+import com.cs.games.mancala.model.visitor.MoveVisitor;
 import org.junit.Test;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class BoardTest {
+
+    private static class CountingVisitor implements MoveVisitor {
+        public LinkedList<Move> visited = new LinkedList<>();
+
+        @Override
+        public void visit(Move m) {
+            visited.add(m);
+        }
+    }
 
     private Board subject = Board.initialBoard();
 
@@ -87,5 +98,16 @@ public class BoardTest {
         assertNotNull(moves);
         assertEquals(5, moves.size());
         assertEquals(Player.TWO, after.getNextPlayer());
+    }
+
+    @Test
+    public void testVisitor() {
+        CountingVisitor visitor = new CountingVisitor();
+        subject.visit(visitor, 1);
+        assertEquals(6, visitor.visited.size());
+
+        visitor = new CountingVisitor();
+        subject.visit(visitor, 2);
+        assertEquals(41, visitor.visited.size());
     }
 }

@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FileCache implements BoardCache {
+    public static final String MOVE_SEPARATOR = "_";
+    public static final String COUNT_SEPARATOR = ",";
     private final File directory;
 
     public FileCache(File directory) {
@@ -48,23 +50,17 @@ public class FileCache implements BoardCache {
             Cup cup = iter.next();
             sb.append(board.getBeadCount(cup));
             if (iter.hasNext()) {
-                sb.append(',');
+                sb.append(COUNT_SEPARATOR);
             }
         }
         return sb.toString();
     }
 
     static String format(List<Move> moves) {
-        StringBuilder sb = new StringBuilder();
-        Iterator<Move> iter = moves.iterator();
-        while (iter.hasNext()) {
-            Move move = iter.next();
-            sb.append(move.getCup().toString());
-            if (iter.hasNext()) {
-                sb.append(':');
-            }
-        }
-        return sb.toString();
+        return moves.stream()
+                .map(move -> move.getCup())
+                .map(cup -> cup.toString())
+                .collect(Collectors.joining(MOVE_SEPARATOR));
     }
 
     @Override
@@ -91,14 +87,14 @@ public class FileCache implements BoardCache {
     }
 
     static List<Cup> parseNextMoves(String line) {
-        String[] split = line.split(":");
+        String[] split = line.split(MOVE_SEPARATOR);
         return Arrays.asList(split).stream()
                 .map(s -> Cup.parse(s))
                 .collect(Collectors.toList());
     }
 
     static int[] parseCupCounts(String line) {
-        String[] split = line.split(",");
+        String[] split = line.split(COUNT_SEPARATOR);
         int[] beads = new int[split.length];
         for(int i=0; i < 14; i++) {
             beads[i] = Integer.parseInt(split[i]);

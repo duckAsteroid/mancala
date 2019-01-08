@@ -1,10 +1,14 @@
 package com.cs.games.mancala.model;
 
+import com.cs.games.mancala.model.visitor.MoveVisitor;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.slf4j.Logger;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * An immutable representation of the current state of the Mancala game - cups and beads; and who's turn it is
@@ -28,6 +32,10 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode
 @ToString
 public class Board {
+    /**
+     * Logger (SLF4J)
+     */
+    private static final Logger LOG = getLogger(Board.class);
     /**
      * The bead counts in the cups. Indexed by {@link Cup#index()}
      */
@@ -105,8 +113,8 @@ public class Board {
         return score;
     }
 
-    public Iterable<Cup> getCups(Player player) {
-        return Arrays.asList(Cup.BOARD_LAYOUT[player.number]);
+    public Player getNextPlayer() {
+        return nextPlayer;
     }
 
     public int getScore(Player player) {
@@ -167,8 +175,28 @@ public class Board {
         }
     }
 
-    public Player getNextPlayer() {
-        return nextPlayer;
+    /**
+     * Depth first recursive visting pattern on all the moves (and subsequent boards)
+     * Up to a certain depth (if > 0)
+     * @param visitor the visitor to the boards
+     * @param depth the depth of recursion (0 or less implies "infinite")
+     */
+    public void visit(final MoveVisitor visitor, final int depth) {
+        if (visitor != null) {
+            if (depth > 0) {
+                int nextDepth = depth - 1;
+                for (Move move : nextMoves()) {
+                    visitor.visit(move);
+                    Board next = move.getAfter();
+                    // recurse - depth first
+                    next.visit(visitor, nextDepth);
+                }
+            }
+            else {
+                LOG.debug("Visitor recursion limit reached");
+            }
+        }
     }
+
 
 }

@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 public class FileCacheTest {
 
     private static final String EXPECTED_COUNTS = "4,4,4,4,4,4,0,4,4,4,4,4,4,0";
-    private static final String EXPECTED_MOVES = "A0:A1:A2:A3:A4:A5";
+    private static final String EXPECTED_MOVES = "A0_A1_A2_A3_A4_A5";
 
     private static final String EXPECTED_BOARD = "A\n24\n24\n" + EXPECTED_COUNTS +"\n" + EXPECTED_MOVES + "\n";
 
