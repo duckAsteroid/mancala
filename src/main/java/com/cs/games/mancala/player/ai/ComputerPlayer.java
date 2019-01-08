@@ -16,6 +16,8 @@ import java.util.List;
  */
 public class ComputerPlayer implements MoveSupplier {
 
+    private int depth = 5;
+
     @Override
     public Move selectFrom(Board board) {
         return doBestScoreMove(board);
@@ -29,16 +31,15 @@ public class ComputerPlayer implements MoveSupplier {
      */
     public Move doBestScoreMove(Board board) {
         List<Move> moves = board.nextMoves();
-        Integer bestScore = null;
+        double bestScore = Double.NEGATIVE_INFINITY;
         Move bestMove = null;
-        // TODO recursive search for best move...
-        Iterator iter = moves.iterator();
-        while (iter.hasNext()) {
-            Move move = (Move) iter.next();
-            Integer score = new Integer(move.getAfter().getLead(board.getNextPlayer()));
-            if (bestScore == null || bestScore.compareTo(score) > 0) {
+        for(Move m : moves) {
+            ScoreProbabilityAccumulator accumulator = new ScoreProbabilityAccumulator(board.getNextPlayer());
+            m.getAfter().visit(accumulator, depth);
+            double score = accumulator.getAverageLead();
+            if (bestMove == null || score > bestScore) {
+                bestMove = m;
                 bestScore = score;
-                bestMove = move;
             }
         }
         return bestMove;

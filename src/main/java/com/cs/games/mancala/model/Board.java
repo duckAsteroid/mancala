@@ -193,7 +193,7 @@ public class Board {
                 }
             }
             else {
-                LOG.debug("Visitor recursion limit reached");
+                LOG.trace("Visitor recursion limit reached");
             }
         }
     }

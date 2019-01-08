@@ -52,7 +52,7 @@ public class Main {
             MoveSupplier player = game.getPlayer();
             Move move = player.selectFrom(game.getBoard());
             if (move == null) {
-                System.out.println("Undo: "+move.getCup());
+                System.out.println("Undo!");
                 game.undo();
             }
             else {
