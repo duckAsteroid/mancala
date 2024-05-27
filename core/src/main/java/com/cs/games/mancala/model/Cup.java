@@ -26,7 +26,7 @@ public class Cup {
      */
     private final Player player;
     /**
-     * The cup number (0 - 7)
+     * The cup number (0 - 6)
      */
     private final int cupNumber;
     /**
@@ -117,6 +117,15 @@ public class Cup {
         Player p = Player.parse(s.charAt(0));
         int index = Integer.parseInt(s.substring(1));
         return BOARD_LAYOUT[p.number][index];
+    }
+
+    public static Iterable<? extends Cup> cups() {
+        return new Iterable<Cup>() {
+            @Override
+            public Iterator<Cup> iterator() {
+                return Cup.iterator();
+            }
+        };
     }
 
 

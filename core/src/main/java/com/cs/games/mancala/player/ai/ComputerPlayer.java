@@ -15,7 +15,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  * A computer player can search through a vast array of possible next moves to
  * evaluate which one maximises the pay-off to the player.
  *
- * @author <A HREF="mailto:chris.senior@teradyne.com?subject=com.cs.games.mancala.model.ai.ComputerPlayer">Chris Senior</A>
+ * @author Chris Senior
  */
 public class ComputerPlayer implements MoveSupplier {
 
@@ -24,7 +24,7 @@ public class ComputerPlayer implements MoveSupplier {
      */
     private static final Logger LOG = getLogger(ComputerPlayer.class);
 
-    private int depth = 5;
+    private int depth = 2;
 
     @Override
     public Move selectFrom(Board board) {

@@ -1,13 +1,17 @@
 package com.cs.games.mancala.console;
 
-import com.cs.games.mancala.model.Game;
-import com.cs.games.mancala.model.Move;
-import com.cs.games.mancala.model.Player;
+import com.cs.games.mancala.model.*;
 import com.cs.games.mancala.player.HumanPlayer;
 import com.cs.games.mancala.player.MoveSupplier;
 import com.cs.games.mancala.player.ai.ComputerPlayer;
 import com.cs.games.mancala.player.ai.RandomPlayer;
 import com.cs.games.mancala.player.human.GameInput;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * Command line mancala game
@@ -45,21 +49,8 @@ public class Main {
         }
 
         Game game = new Game(p1Supplier, p2Supplier);
-        while(!game.getBoard().isGameOver()) {
-            // TODO dump board
+        game.run();
 
-            // ask for next move
-            MoveSupplier player = game.getPlayer();
-            Move move = player.selectFrom(game.getBoard());
-            if (move == null) {
-                System.out.println("Undo!");
-                game.undo();
-            }
-            else {
-                System.out.println("Move: "+move.getCup());
-                game.doMove(move);
-            }
-        }
         System.out.println("Final scores:");
         System.out.println("\t P1: "+game.getBoard().getScore(Player.ONE));
         System.out.println("\t P2: "+game.getBoard().getScore(Player.TWO));
@@ -82,6 +73,55 @@ public class Main {
         }
         int selected = input.getInteger(0, playerTypes.length - 1);
         return playerTypes[selected];
+    }
+
+    public static void render(Board board) {
+        System.out.println("--------------Player one----------------");
+        System.out.println("|    |  0 |  1 |  2 |  3 |  4 |  5 |    |");
+        System.out.println("|    |-----------------------------|    |");
+        renderCupRow(board, Player.ONE);
+        System.out.println("|    |-----------------------------|    |");
+        renderCupRow(board, Player.TWO);
+        System.out.println("|    |-----------------------------|    |");
+        System.out.println("|    |  5 |  4 |  3 |  2 |  1 |  0 |    |");
+        System.out.println("--------------Player two----------------");
+    }
+
+    private static void renderCupRow(Board board, Player p) {
+        Iterable<Cup> cups;
+        if (p == Player.ONE) {
+            System.out.print  ("|    ");
+            cups = Cup.playerCups(p);
+        }
+        else {
+            cups = new Iterable<Cup>() {
+                @Override
+                public Iterator<Cup> iterator() {
+                    return new LinkedList<Cup>(StreamSupport.stream(Cup.playerCups(p).spliterator(), false)
+                            .collect(Collectors.toList())).descendingIterator();
+                }
+            };
+        }
+
+        for(Cup c : cups)
+        {
+            System.out.print("|"+renderCup(board, c));
+        }
+        if (p == Player.TWO) {
+            System.out.println("|    |");
+        }
+        else {
+            System.out.println("|");
+        }
+    }
+
+    private static String renderCup(Board board, Cup c){
+        int cupCount = board.getBeadCount(c);
+        String value = Integer.toString(cupCount);
+        if (value.length() < 2) {
+            value = " " + value;
+        }
+        return " "+value+" ";
     }
 
     public static MoveSupplier moveSupplier(PlayerType type, GameInput input) {
