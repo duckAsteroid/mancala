@@ -83,4 +83,22 @@ public class Game {
     public MoveSupplier getPlayer() {
         return players[board.getNextPlayer().number];
     }
+
+    public void run() {
+        while(!board.isGameOver()) {
+
+            // ask for next move
+            MoveSupplier player = getPlayer();
+            System.out.println("Player: "+(board.getNextPlayer().number + 1));
+            Move move = player.selectFrom(board);
+            if (move == null) {
+                System.out.println("Undo!");
+                undo();
+            }
+            else {
+                System.out.println("Move: "+move.getCup());
+                doMove(move);
+            }
+        }
+    }
 }
