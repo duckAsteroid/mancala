@@ -16,7 +16,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.2'
     annotationProcessor 'org.projectlombok:lombok:1.18.2'
 
-    testCompile 'junit:junit:4.11'
+    testCompile 'junit:junit:4.13.2'
     testCompile 'org.mockito:mockito-all:1.10.19'
     runtime 'ch.qos.logback:logback-classic:1.2.3'
 }
